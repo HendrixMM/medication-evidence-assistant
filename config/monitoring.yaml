@@ -1,0 +1,33 @@
+# Monitoring configuration template (customize for your deployment)
+monitoring:
+  enabled: true
+  interval_seconds: 60
+  metrics:
+    - name: query_latency
+      type: histogram
+      buckets: [0.1, 0.5, 1.0, 2.0, 5.0]
+    - name: error_rate
+      type: counter
+    - name: model_usage
+      type: counter
+      labels: [model_name]
+    - name: api_quota_usage
+      type: gauge
+  alerts:
+    - name: high_error_rate
+      condition: error_rate > 0.01
+      severity: critical
+      notification: pagerduty
+    - name: high_latency
+      condition: query_latency_p95 > 2.0
+      severity: warning
+      notification: slack
+    - name: quota_threshold
+      condition: api_quota_usage > 0.8
+      severity: warning
+      notification: email
+  exporters:
+    - type: prometheus
+      endpoint: http://prometheus:9090
+    - type: json
+      path: /var/log/rag/metrics.json

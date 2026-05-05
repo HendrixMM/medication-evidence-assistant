@@ -1,0 +1,11 @@
+Additional targeted queries:
+
+[
+  {
+    "pubmed_query": "(warfarin[tiab]) AND (monitoring[tiab]) AND English[Language] AND Humans[Mesh]",
+    "sub_question_index": 0,
+    "strategy_label": "refined"
+  }
+]
+
+These should improve coverage.

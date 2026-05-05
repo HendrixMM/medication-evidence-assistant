@@ -1,0 +1,106 @@
+# Journal Quality Database for Medical/Pharmaceutical Research
+# Tiers: tier1 (highest quality), tier2 (high quality), tier3 (moderate quality), tier4 (lower quality)
+
+journals:
+  # Tier 1: Top-tier medical and pharmaceutical journals
+  tier1:
+    - "Nature Medicine"
+    - "New England Journal of Medicine"
+    - "The Lancet"
+    - "Science"
+    - "Nature"
+    - "Cell"
+    - "JAMA"
+    - "British Medical Journal"
+    - "Annals of Internal Medicine"
+    - "Nature Reviews Drug Discovery"
+    - "Journal of Clinical Investigation"
+    - "Nature Biotechnology"
+    - "Clinical Pharmacology & Therapeutics"
+    - "Annual Review of Pharmacology and Toxicology"
+    - "Drug Metabolism and Disposition"
+
+  # Tier 2: High-quality specialized journals
+  tier2:
+    - "Journal of Medicinal Chemistry"
+    - "Pharmaceutical Research"
+    - "Clinical Pharmacokinetics"
+    - "European Journal of Pharmaceutical Sciences"
+    - "Drug Discovery Today"
+    - "Journal of Pharmacology and Experimental Therapeutics"
+    - "Molecular Pharmaceutics"
+    - "AAPS Journal"
+    - "Journal of Controlled Release"
+    - "International Journal of Pharmaceutics"
+    - "Pharmacological Reviews"
+    - "Clinical Cancer Research"
+    - "Journal of Clinical Oncology"
+    - "Blood"
+    - "Circulation"
+
+  # Tier 3: Moderate quality specialized journals
+  tier3:
+    - "European Journal of Clinical Pharmacology"
+    - "Journal of Clinical Pharmacy and Therapeutics"
+    - "International Journal of Clinical Pharmacology and Therapeutics"
+    - "Pharmacotherapy"
+    - "American Journal of Health-System Pharmacy"
+    - "Journal of Pharmaceutical Sciences"
+    - "Pharmaceutical Development and Technology"
+    - "Drug Development and Industrial Pharmacy"
+    - "Journal of Drug Targeting"
+    - "Current Drug Metabolism"
+    - "Expert Opinion on Drug Metabolism & Toxicology"
+    - "Biopharmaceutics & Drug Disposition"
+    - "Journal of Pharmacy and Pharmacology"
+
+  # Tier 4: Lower tier but still acceptable journals
+  tier4:
+    - "Indian Journal of Pharmaceutical Sciences"
+    - "African Journal of Pharmacy and Pharmacology"
+    - "International Journal of Pharmaceutical Research"
+    - "Journal of Applied Pharmaceutical Science"
+    - "Current Pharmaceutical Design"
+    - "Letters in Drug Design & Discovery"
+    - "Recent Patents on Drug Delivery & Formulation"
+    - "Open Access journals (various)"
+
+# Journal impact factor ranges (approximate guidelines)
+impact_factor_ranges:
+  tier1: "Usually > 15"
+  tier2: "Usually 3-15"
+  tier3: "Usually 1-3"
+  tier4: "Usually < 1 or unranked"
+
+# Special categories
+special_categories:
+  preprint_servers:
+    - "bioRxiv"
+    - "medRxiv"
+    - "arXiv"
+    - "Research Square"
+    - "SSRN"
+
+  regulatory_publications:
+    - "FDA Guidance Documents"
+    - "EMA Guidelines"
+    - "ICH Guidelines"
+    - "Cochrane Reviews"
+    - "Clinical Practice Guidelines"
+
+# Quality indicators
+quality_indicators:
+  positive:
+    - "peer-reviewed"
+    - "indexed in PubMed"
+    - "indexed in MEDLINE"
+    - "impact factor available"
+    - "published by reputable publisher"
+    - "editorial board disclosed"
+
+  negative:
+    - "predatory journal"
+    - "pay-to-publish without peer review"
+    - "not indexed in major databases"
+    - "unclear editorial process"
+    - "suspicious publishing practices"

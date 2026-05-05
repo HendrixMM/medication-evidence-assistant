@@ -1,0 +1,86 @@
+# Input validation rails for medical query safety
+# Simplified flows compatible with latest Colang parser.
+
+define flow medical input validation
+  """
+  Validate medical context and record disclaimer requirements.
+  """
+  if $user_message
+    $medical_context = execute check_medical_context(query=$user_message)
+    if $medical_context.valid == False
+      bot refuse invalid medical context
+      stop
+    if $medical_context.disclaimer_required == True
+      bot inform "This response will include appropriate medical disclaimers as this appears to be a medical information request."
+
+
+define flow check jailbreak attempts
+  """
+  Detect and block medical jailbreak attempts.
+  """
+  if $user_message
+    $jailbreak_detected = execute detect_medical_jailbreak(query=$user_message)
+    if $jailbreak_detected == True
+      bot refuse jailbreak attempt
+      stop
+
+
+define flow pii detection and masking
+  """
+  Detect and mask personally identifiable health information (PHI/PII).
+  """
+  if $user_message
+    $pii_scan = execute scan_medical_pii(text=$user_message)
+    if $pii_scan.detected == True
+      $user_message = execute mask_medical_pii(text=$user_message, detected_pii=$pii_scan.types)
+      bot inform "Personal health information has been detected and masked for privacy protection."
+
+
+define flow pharmaceutical context validation
+  """
+  Ensure queries are within pharmaceutical research scope.
+  """
+  if $user_message
+    $pharma_context = execute validate_pharmaceutical_context(query=$user_message)
+    if $pharma_context.valid == False
+      bot refuse non pharmaceutical context
+      stop
+    if $pharma_context.research_focused == False
+      bot warn "This query appears to be seeking medical advice. I can only provide research-based pharmaceutical information."
+
+
+define flow toxicity screening
+  """
+  Screen for potentially harmful medical requests.
+  """
+  if $user_message
+    $toxicity_score = execute assess_medical_toxicity(text=$user_message)
+    if $toxicity_score > 0.8
+      bot refuse high toxicity
+      stop
+    if $toxicity_score <= 0.8 and $toxicity_score > 0.5
+      bot warn moderate toxicity
+
+
+define bot refuse invalid medical context
+  "I can only assist with pharmaceutical research questions based on published scientific literature. I cannot provide personal medical advice, diagnoses, or treatment recommendations. Please consult a healthcare professional for medical concerns."
+
+define bot refuse jailbreak attempt
+  "I cannot bypass my medical safety guidelines. I'm designed to provide safe, evidence-based pharmaceutical research information only. Please rephrase your query to focus on research questions about drugs or drug interactions."
+
+define bot refuse non pharmaceutical context
+  "I specialize in pharmaceutical research analysis. Please ask questions about drug interactions, pharmacokinetics, clinical trials, or other pharmaceutical research topics."
+
+define bot refuse high toxicity
+  "I cannot assist with requests that may be harmful. If you're experiencing a medical emergency, please contact emergency services immediately. For mental health support, please contact a crisis helpline or mental health professional."
+
+define bot warn moderate toxicity
+  "⚠️ I noticed potentially concerning content. Please ensure you're seeking research information only. For medical concerns, consult healthcare professionals."
+
+
+define bot inform $message
+  $message
+
+
+define bot warn $message
+  "⚠️ " + $message

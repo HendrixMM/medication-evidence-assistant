@@ -1,0 +1,21 @@
+{
+  "answer": "Answer text",
+  "sources": [
+    {
+      "pmid": "1001",
+      "title": "Warfarin bleeding risk review",
+      "authors": ["A. Author"],
+      "journal": "Journal A",
+      "year": null,
+      "url": null,
+      "relevance_score": 4.6,
+      "study_type": "Randomized Controlled Trial",
+      "snippet": "Warfarin monitoring and bleeding risk details in adults."
+    }
+  ],
+  "evidence_level": "rct",
+  "uncertainties": [],
+  "safety_warnings": [],
+  "disclaimer": "Medical Disclaimer: This information is for research and educational purposes only.",
+  "verdict": "ok"
+}

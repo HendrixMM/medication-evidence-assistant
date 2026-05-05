@@ -1,0 +1,17 @@
+# CODEOWNERS routes reviews automatically for higher signal, low friction.
+# Customize owners below to your actual GitHub users or teams.
+
+# Docs
+docs/**              @HendrixMM
+README.md            @HendrixMM
+
+# CI
+.github/workflows/** @HendrixMM
+
+# Product code
+src/**               @HendrixMM
+frontend/**          @HendrixMM
+Makefile             @HendrixMM
+
+# Default fallback (comment out if not desired)
+*                    @HendrixMM

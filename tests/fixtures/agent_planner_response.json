@@ -1,0 +1,20 @@
+{
+  "normalized_question": "Is warfarin safe with fluconazole?",
+  "intent": "drug_interaction",
+  "drugs_identified": ["warfarin", "fluconazole"],
+  "sub_questions": [
+    {
+      "text": "interaction severity and monitoring",
+      "rationale": "core safety issue",
+      "priority": 1
+    }
+  ],
+  "planned_queries": [
+    {
+      "pubmed_query": "(warfarin[tiab] OR fluconazole[tiab]) AND (interaction[tiab]) AND English[Language] AND Humans[Mesh]",
+      "sub_question_index": 0,
+      "strategy_label": "primary"
+    }
+  ],
+  "reasoning": "Focus on clinically relevant interaction evidence."
+}

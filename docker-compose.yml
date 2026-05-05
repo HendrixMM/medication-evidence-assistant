@@ -1,0 +1,45 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    container_name: medication-evidence-api
+    command: uvicorn src.api.app:app --host 0.0.0.0 --port 8000
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - NVIDIA_API_KEY=${NVIDIA_API_KEY:-}
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY:-}
+      - PUBMED_EMAIL=${PUBMED_EMAIL:-}
+      - PUBMED_API_KEY=${PUBMED_API_KEY:-}
+      - PUBMED_EUTILS_API_KEY=${PUBMED_EUTILS_API_KEY:-}
+      - AGENT_LLM_PROVIDER=${AGENT_LLM_PROVIDER:-openai}
+      - AGENT_MODEL=${AGENT_MODEL:-gpt-5.4-mini}
+      - LLM_MODEL=${LLM_MODEL:-gpt-5.4-mini}
+      - AGENT_MAX_TURNS=${AGENT_MAX_TURNS:-4}
+      - EVIDENCE_QUERY_BUDGET_MAX=${EVIDENCE_QUERY_BUDGET_MAX:-12}
+      - EVIDENCE_MAX_LLM_SCORING_CANDIDATES=${EVIDENCE_MAX_LLM_SCORING_CANDIDATES:-15}
+      - EVIDENCE_CACHE_TTL_SECONDS=${EVIDENCE_CACHE_TTL_SECONDS:-86400}
+      - AGENT_MODE_ENABLED=${AGENT_MODE_ENABLED:-true}
+      - AGENT_ENABLE_GUARDRAILS=${AGENT_ENABLE_GUARDRAILS:-false}
+      - ENABLE_MEDICAL_GUARDRAILS=${ENABLE_MEDICAL_GUARDRAILS:-false}
+      - CORS_ALLOW_ORIGINS=${CORS_ALLOW_ORIGINS:-http://localhost:3000}
+      - API_CHAT_MAX_REQUESTS_PER_MINUTE=${API_CHAT_MAX_REQUESTS_PER_MINUTE:-10}
+      - API_CHAT_MAX_REQUESTS_PER_DAY=${API_CHAT_MAX_REQUESTS_PER_DAY:-}
+      - TRUST_FORWARDED_HEADERS=${TRUST_FORWARDED_HEADERS:-true}
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: medication-evidence-frontend
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "3000:80"

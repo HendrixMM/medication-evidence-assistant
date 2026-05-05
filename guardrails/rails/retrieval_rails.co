@@ -1,0 +1,74 @@
+# Retrieval validation rails for pharmaceutical document safety
+# Updated to rely on Python actions for list processing to remain compatible with latest colang parser
+
+define flow validate pubmed sources
+  """
+  Screen retrieved sources for authenticity and minimum quality thresholds.
+  """
+  if $retrieved_documents
+    $pubmed_validation = execute process_pubmed_sources(sources=$retrieved_documents)
+    $retrieved_documents = $pubmed_validation.filtered_sources
+
+    if $pubmed_validation.suspicious_sources
+      bot warn suspicious sources detected
+
+    if $pubmed_validation.insufficient_valid
+      bot warn insufficient valid sources
+      execute request_additional_sources()
+
+
+define flow medical relevance filtering
+  """
+  Filter sources by pharmaceutical relevance and preserve context metadata.
+  """
+  if $retrieved_documents and $user_query
+    $relevance_result = execute filter_pharmaceutical_relevance_batch(sources=$retrieved_documents, query=$user_query)
+    $retrieved_documents = $relevance_result.filtered_sources
+
+    if $relevance_result.warnings
+      bot warn low relevance sources
+
+    if $relevance_result.high_relevance_count < 1
+      execute suggest_query_refinement(query=$user_query)
+
+
+define flow duplicate source removal
+  """
+  Remove duplicate documents using PMID and title similarity checks.
+  """
+  if $retrieved_documents
+    $dedupe_result = execute remove_duplicate_sources_batch(sources=$retrieved_documents)
+    $retrieved_documents = $dedupe_result.unique_sources
+
+    if $dedupe_result.duplicates_removed > 0
+      bot inform $dedupe_result.message
+
+
+define flow impact factor assessment
+  """
+  Enrich sources with journal quality metadata and surface low-quality warnings.
+  """
+  if $retrieved_documents
+    $quality_result = execute enrich_sources_with_quality(sources=$retrieved_documents)
+    $retrieved_documents = $quality_result.enriched_sources
+
+    if $quality_result.low_quality_warning
+      bot warn low quality source distribution
+
+
+# Bot response definitions for retrieval issues
+
+define bot warn suspicious sources detected
+  "⚠️ Some sources could not be verified as authentic. They have been filtered out to ensure reliability."
+
+define bot warn insufficient valid sources
+  "⚠️ Limited valid sources found. Results may be incomplete. Consider refining your search terms."
+
+define bot warn low relevance sources
+  "⚠️ Some retrieved sources have low relevance to your pharmaceutical research query. Consider refining your search."
+
+define bot warn low quality source distribution
+  "⚠️ The retrieved sources include limited high-impact publications. Consider expanding search terms for higher quality evidence."
+
+define bot inform $message
+  $message

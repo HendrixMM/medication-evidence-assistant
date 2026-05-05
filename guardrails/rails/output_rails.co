@@ -1,0 +1,109 @@
+# Output validation rails for medical response safety
+# Simplified flows compatible with latest Colang parser.
+
+define flow medical disclaimer enforcement
+  """
+  Ensure every response carries the appropriate medical disclaimer.
+  """
+  if $bot_message
+    $response_type = execute classify_medical_response_type(response=$bot_message)
+    $bot_message = execute ensure_disclaimer(response=$bot_message, response_type=$response_type)
+
+
+define flow hallucination detection medical
+  """
+  Evaluate hallucination risk and apply mitigation guidance.
+  """
+  if $bot_message and $sources
+    $hallucination_result = execute evaluate_hallucination_risk(response=$bot_message, sources=$sources)
+    if $hallucination_result.block == True
+      bot refuse hallucination detected
+      stop
+    if $hallucination_result.notice
+      $bot_message = $hallucination_result.message
+
+
+define flow fact check against pubmed
+  """
+  Validate medical claims against provided sources.
+  """
+  if $bot_message and $sources
+    $fact_check_result = execute evaluate_fact_check_result(response=$bot_message, sources=$sources)
+    $bot_message = $fact_check_result.message
+    if $fact_check_result.notice == True
+      bot warn unsupported claims
+
+
+define flow regulatory compliance check
+  """
+  Ensure responses adhere to pharmaceutical regulatory guidance.
+  """
+  if $bot_message
+    $compliance_result = execute evaluate_regulatory_compliance_flow(response=$bot_message)
+    if $compliance_result.block == True
+      bot refuse regulatory violation
+      stop
+    $bot_message = $compliance_result.message
+
+
+define flow sensitive information filtering
+  """
+  Filter sensitive advice or diagnostic statements directed at the user.
+  """
+  if $bot_message
+    $filter_result = execute filter_sensitive_response_content(response=$bot_message)
+    if $filter_result.block == True
+      bot refuse medical advice given
+      stop
+    $bot_message = $filter_result.message
+
+
+define flow add evidence quality indicators
+  """
+  Append evidence quality summaries for transparency.
+  """
+  if $bot_message and $sources
+    $bot_message = execute append_evidence_quality_summary(response=$bot_message, sources=$sources)
+
+
+define flow pharmaceutical safety warnings
+  """
+  Add contextual pharmaceutical safety warnings based on content.
+  """
+  if $bot_message
+    $bot_message = execute append_pharmaceutical_warnings_response(response=$bot_message)
+
+
+define flow validate source citations
+  """
+  Ensure responses include citations referencing retrieved literature.
+  """
+  if $bot_message and $sources
+    $citation_result = execute ensure_citation_block(response=$bot_message, sources=$sources)
+    $bot_message = $citation_result.message
+    if $citation_result.invalid_citations
+      bot warn invalid citations
+
+
+define flow enhance medical response quality
+  """
+  Apply formatting helpers for clarity and structure.
+  """
+  if $bot_message
+    $bot_message = execute enhance_response_quality_format(response=$bot_message)
+
+
+define bot refuse hallucination detected
+  "I've detected potentially inaccurate information in my response. Let me provide a more evidence-based answer based strictly on the available sources."
+
+define bot refuse regulatory violation
+  "I cannot provide responses that violate regulatory guidelines. Let me rephrase this information in compliance with pharmaceutical safety standards."
+
+define bot refuse medical advice given
+  "I cannot provide direct medical advice. I can only share research-based pharmaceutical information. Please consult healthcare professionals for medical guidance."
+
+define bot warn unsupported claims
+  "Some information in this response may not be fully supported by the provided sources."
+
+define bot warn invalid citations
+  "⚠️ Some citations in this response may not match the provided sources. Please verify references independently."

@@ -1,0 +1,14 @@
+name: Security disclosure
+description: Report a security issue privately through GitHub Security Advisories.
+title: "[Security]: "
+labels: ["security"]
+body:
+  - type: markdown
+    attributes:
+      value: Please use GitHub Security Advisories for private vulnerability reports when possible.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+    validations:
+      required: true

@@ -1,0 +1,68 @@
+[
+  {
+    "pmid": "1001",
+    "title": "Warfarin bleeding risk review",
+    "abstract": "Warfarin monitoring and bleeding risk details in adults.",
+    "authors": ["A. Author"],
+    "journal": "Journal A",
+    "publication_types": ["Randomized Controlled Trial"],
+    "ranking_score": 0.0,
+    "relevance_score": 4.6,
+    "source_system": "pubmed"
+  },
+  {
+    "pmid": "1002",
+    "title": "Warfarin monitoring review",
+    "abstract": "Warfarin bleeding risk monitoring recommendations.",
+    "authors": ["B. Author"],
+    "journal": "Journal B",
+    "publication_types": ["Review"],
+    "ranking_score": 0.0,
+    "relevance_score": 4.4,
+    "source_system": "pubmed"
+  },
+  {
+    "pmid": "1003",
+    "title": "Warfarin interaction summary",
+    "abstract": "Warfarin interaction management and bleeding monitoring.",
+    "authors": ["C. Author"],
+    "journal": "Journal C",
+    "publication_types": ["Review"],
+    "ranking_score": 0.0,
+    "relevance_score": 4.2,
+    "source_system": "pubmed"
+  },
+  {
+    "pmid": "1004",
+    "title": "Warfarin safety outcomes",
+    "abstract": "Warfarin treatment outcomes and bleeding surveillance.",
+    "authors": ["D. Author"],
+    "journal": "Journal D",
+    "publication_types": ["Review"],
+    "ranking_score": 0.0,
+    "relevance_score": 4.0,
+    "source_system": "pubmed"
+  },
+  {
+    "pmid": "1005",
+    "title": "Warfarin anticoagulation review",
+    "abstract": "Warfarin monitoring during anticoagulation therapy.",
+    "authors": ["E. Author"],
+    "journal": "Journal E",
+    "publication_types": ["Review"],
+    "ranking_score": 0.0,
+    "relevance_score": 3.8,
+    "source_system": "pubmed"
+  },
+  {
+    "pmid": "1006",
+    "title": "Warfarin clinical guidance",
+    "abstract": "Warfarin bleeding risk and clinical monitoring guidance.",
+    "authors": ["F. Author"],
+    "journal": "Journal F",
+    "publication_types": ["Review"],
+    "ranking_score": 0.0,
+    "relevance_score": 3.6,
+    "source_system": "pubmed"
+  }
+]

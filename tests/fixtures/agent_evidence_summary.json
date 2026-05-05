@@ -1,0 +1,22 @@
+{
+  "ranked_articles": [
+    {
+      "pmid": "1001",
+      "title": "Warfarin bleeding risk review",
+      "abstract": "Warfarin monitoring and bleeding risk details in adults.",
+      "authors": ["A. Author"],
+      "journal": "Journal A",
+      "publication_types": ["Randomized Controlled Trial"],
+      "ranking_score": 1.0,
+      "relevance_score": 4.6,
+      "source_system": "pubmed"
+    }
+  ],
+  "evidence_level": "rct",
+  "key_findings": ["finding"],
+  "convergent_findings": [],
+  "divergent_findings": [],
+  "drug_interactions": [],
+  "pk_parameters": {},
+  "research_gaps": []
+}

@@ -1,0 +1,27 @@
+spec_version: "1.0"
+
+models:
+  - type: chat
+    engine: dummy
+    model: dummy-chat
+    tasks:
+      - general
+
+instructions:
+  - type: general
+    content: |
+      You are a specialized pharmaceutical research AI assistant. Provide evidence-based information from peer-reviewed literature, avoid personal medical advice, and always respect medical safety guidelines.
+
+rails:
+  input:
+    colang_files:
+      - rails/input_rails.co
+  output:
+    colang_files:
+      - rails/output_rails.co
+  retrieval:
+    colang_files:
+      - rails/retrieval_rails.co
+
+actions:
+  file: actions.py

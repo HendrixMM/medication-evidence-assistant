@@ -1,0 +1,197 @@
+# Centralized Alert Configuration for Pharmaceutical Research
+# Version: 1.0.0
+# Last Updated: 2025-09-23
+#
+# This configuration centralizes all alerting thresholds for the NVIDIA Build
+# cloud-first pharmaceutical RAG system, providing maintainable and tunable
+# cost monitoring and performance alerts.
+
+# ==============================================================================
+# NVIDIA Build Free Tier Monitoring
+# ==============================================================================
+nvidia_build:
+  # Monthly free tier limits (NVIDIA Build platform)
+  monthly_free_requests: 10000
+
+  # Usage alert thresholds (percentages of monthly limit)
+  usage_alerts:
+    daily_burn_rate: 0.05 # 5% per day (500 requests) - sustainable pace
+    weekly_burn_rate: 0.20 # 20% per week (2000 requests) - healthy usage
+    monthly_usage_warning: 0.80 # 80% of monthly limit (8000 requests) - action needed
+    monthly_usage_critical: 0.95 # 95% of monthly limit (9500 requests) - urgent
+
+  # Rate limiting awareness
+  requests_per_minute_baseline: 60 # Conservative baseline for planning
+  burst_detection_threshold: 100 # Requests in 5-minute window
+
+# ==============================================================================
+# Pharmaceutical Research Specific Alerts
+# ==============================================================================
+pharmaceutical:
+  # Research project budget monitoring
+  project_budget:
+    warning_threshold: 0.75 # 75% of project budget used
+    critical_threshold: 0.90 # 90% of project budget used
+    budget_exhaustion_alert: 0.95 # 95% budget exhaustion warning
+
+  # Query efficiency monitoring
+  query_performance:
+    max_acceptable_response_time_ms: 3000 # 3 seconds max response time
+    high_token_usage_threshold: 1000 # High token usage alert
+    avg_tokens_warning: 500 # Average tokens per query warning
+    consecutive_failures_alert: 3 # Alert after 3 consecutive failures
+
+  # Research workflow optimization
+  workflow_efficiency:
+    min_free_tier_usage_percentage: 80 # Minimum % of queries on free tier
+    batch_optimization_trigger: 50 # Trigger batching after N queries/hour
+    cost_per_query_warning: 0.1 # Warning if cost per query exceeds threshold
+    batch_window_seconds: 60 # Time window for batch triggers
+    preferred_batch_sizes:
+      embeddings: 75
+      chat: 10
+
+# ==============================================================================
+# Cost Optimization Alerts
+# ==============================================================================
+cost_optimization:
+  # Infrastructure cost monitoring (self-hosted fallback)
+  infrastructure:
+    estimated_hourly_cost_warning: 2.0 # $2/hour infrastructure warning
+    fallback_usage_excessive: 0.3 # >30% fallback usage indicates issues
+    cost_efficiency_alert: 0.2 # Alert if <20% free tier utilization
+
+  # Budget management
+  budget_management:
+    monthly_budget_soft_limit: 100 # $100 monthly budget soft limit
+    monthly_budget_hard_limit: 150 # $150 monthly budget hard limit
+    cost_trend_warning_percentage: 1.2 # 120% of expected cost trend
+    project_budget_alerts_enabled: true
+
+  # Return on investment tracking
+  roi_tracking:
+    min_queries_per_research_session: 10 # Minimum queries for productive session
+    max_cost_per_pharmaceutical_insight: 5.0 # Max cost per research insight
+
+# ==============================================================================
+# Performance and Health Monitoring
+# ==============================================================================
+performance:
+  # Endpoint health monitoring
+  endpoint_health:
+    max_consecutive_failures: 3 # Max failures before health alert
+    response_time_degradation: 1.5 # 1.5x baseline response time alert
+    error_rate_threshold: 0.05 # 5% error rate threshold
+    health_check_interval_minutes: 5 # Health check frequency
+
+  # System performance
+  system_performance:
+    memory_usage_warning: 0.8 # 80% memory usage warning
+    cpu_usage_warning: 0.7 # 70% CPU usage warning
+    disk_space_warning: 0.85 # 85% disk space warning
+    concurrent_requests_limit: 10 # Max concurrent requests
+
+# ==============================================================================
+# Alert Delivery Configuration
+# ==============================================================================
+alert_delivery:
+  # Notification channels
+  channels:
+    console_logging: true # Enable console log alerts
+    file_logging: true # Enable file-based alert logging
+    email_alerts: false # Email alerts (requires SMTP config)
+    slack_notifications: false # Slack notifications (requires webhook)
+
+  # Alert frequency controls
+  frequency_controls:
+    min_interval_between_alerts_minutes: 15 # Min 15 minutes between same alerts
+    alert_escalation_hours: 2 # Escalate after 2 hours unresolved
+    digest_summary_hours: 24 # Daily digest summary
+
+  # Alert severity levels
+  severity_mapping:
+    info: ["daily_burn_rate", "workflow_efficiency"]
+    warning: ["weekly_burn_rate", "query_performance", "project_budget"]
+    critical:
+      ["monthly_usage_critical", "budget_exhaustion_alert", "endpoint_health"]
+    urgent: ["budget_hard_limit", "system_failure", "security_breach"]
+
+# ==============================================================================
+# Pharmaceutical Domain Configuration
+# ==============================================================================
+pharmaceutical_domain:
+  # Query classification thresholds
+  query_classification:
+    drug_interaction_keywords:
+      ["interaction", "contraindication", "combined", "together"]
+    pharmacokinetics_keywords:
+      ["absorption", "metabolism", "clearance", "half-life"]
+    mechanism_keywords: ["mechanism", "pathway", "target", "receptor"]
+    clinical_keywords: ["trial", "study", "patient", "efficacy", "safety"]
+
+  # Research quality metrics
+  quality_metrics:
+    min_response_relevance_score: 0.7 # Minimum relevance for pharmaceutical queries
+    max_acceptable_medical_uncertainty: 0.2 # Max uncertainty in medical responses
+    required_citation_coverage: 0.8 # Required citation coverage for medical facts
+
+  # Compliance and safety
+  compliance:
+    medical_disclaimer_required: true # Require medical disclaimers
+    pii_detection_enabled: true # Enable PII detection in queries
+    regulatory_compliance_mode: "FDA" # Regulatory compliance framework
+
+# ==============================================================================
+# Development and Testing Configuration
+# ==============================================================================
+development:
+  # Debug and development alerts
+  debug_alerts:
+    verbose_logging_enabled: false # Verbose development logging
+    performance_profiling_enabled: false # Performance profiling alerts
+    api_call_tracing_enabled: false # API call tracing
+
+  # Testing thresholds (more permissive for development)
+  testing_overrides:
+    relaxed_rate_limits: true # Relaxed rate limits for testing
+    mock_cost_tracking: false # Use mock cost tracking
+    bypass_budget_limits: false # Bypass budget limits in test mode
+
+# ==============================================================================
+# Feature Flags Integration
+# ==============================================================================
+feature_flags:
+  # Feature-based alerting
+  features:
+    daily_alerts_enabled: true # Enable daily credit burn alerts
+    batch_optimization_enabled: true # Enable batch processing alerts
+    pharmaceutical_benchmarks_enabled: false # Enable pharma benchmark alerts
+    ngc_deprecation_warnings_enabled: true # Enable NGC deprecation warnings
+
+  # Experimental features
+  experimental:
+    ai_powered_cost_optimization: false # AI-powered optimization suggestions
+    predictive_usage_modeling: false # Predictive usage pattern modeling
+    automated_threshold_adjustment: false # Auto-adjust thresholds based on usage
+
+# ==============================================================================
+# Version and Maintenance
+# ==============================================================================
+metadata:
+  version: "1.0.0"
+  last_updated: "2025-09-23"
+  maintained_by: "Pharmaceutical RAG Team"
+  review_schedule: "monthly"
+
+  # Configuration validation
+  validation:
+    strict_threshold_validation: true # Strict validation of threshold values
+    range_checks_enabled: true # Range validation for numeric values
+    dependency_validation: true # Validate dependent configuration values
+
+# Notes:
+# - All percentage thresholds are expressed as decimals (0.05 = 5%)
+# - Time-based thresholds use appropriate units (seconds, minutes, hours)
+# - Cost thresholds assume USD currency
+# - Update version number when making significant changes
+# - Test configuration changes in development environment first

@@ -1,0 +1,27 @@
+# Medical safety and privacy dependencies for pharmaceutical/healthcare RAG applications
+# Install this after requirements.txt when ENABLE_MEDICAL_GUARDRAILS=true
+#
+# Installation:
+# pip install -r requirements.txt && pip install -r requirements-medical.txt
+#
+# Additional setup required:
+# python -m spacy download en_core_web_sm
+# python -m spacy download en_core_sci_sm  # Optional: for better medical text processing
+
+# Privacy and anonymization
+presidio-analyzer>=2.2.0
+presidio-anonymizer>=2.2.0
+
+# NLP and medical text processing
+spacy>=3.7.0
+scispacy>=0.5.3
+
+# Transformers for advanced NLP models
+transformers>=4.30.0
+
+# Guardrails and safety validation
+nemoguardrails>=0.8.0,<0.9.0
+guardrails-ai>=0.5.0
+
+# Optional: Additional spaCy models for medical text
+# en-core-sci-sm>=0.5.3  # Uncomment if using scispacy scientific models
