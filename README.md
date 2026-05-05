@@ -4,6 +4,16 @@ A personal project exploring medication-information retrieval with a Python/Fast
 
 I built this project to answer a practical question: can a medication assistant be useful without pretending to be a doctor? The backend retrieves consumer health information and biomedical evidence, normalizes it into one response schema, and returns guarded answers with citations, disclaimers, and structured fallback behavior when a source or model path fails.
 
+## Demo
+
+Representative local screenshots from the React chat UI:
+
+![Chat UI showing a medication comparison answer with MedlinePlus citations and run telemetry.](docs/demo/chat-ui.jpg)
+
+![Fallback response showing abstention behavior when supported evidence is unavailable.](docs/demo/fallback.jpg)
+
+The demo highlights two portfolio-relevant paths: a source-linked medication answer and a failure mode where the API returns an abstention instead of inventing unsupported medical guidance.
+
 ## What It Does
 
 - Runs a local product stack with Docker Compose.
@@ -16,24 +26,41 @@ I built this project to answer a practical question: can a medication assistant 
 
 ## Technical Highlights
 
-- Containerized a Python/FastAPI backend and React frontend with Docker Compose for reproducible local deployment.
-- Designed fallback and partial-response paths so retrieval or generation failures return structured errors or abstention responses instead of crashing the API.
-- Wrote 617 pytest tests reaching 87.2% coverage across the agent, API, evidence, and medical retrieval packages.
-- Implemented structured logging and monitoring utilities for endpoint health, alerts, quotas, and API troubleshooting.
-- Built an adapter layer that normalizes results from multiple retrieval backends into a single schema, allowing sources to be swapped without modifying consumer code.
+- The backend treats the LLM as one step in a retrieval pipeline, not as the source of truth. Retrieval results, citations, usage data, and error metadata are kept visible to the API consumer.
+- Docker Compose runs the FastAPI service and React frontend together, which makes the project easy to evaluate locally without hand-wiring ports or startup commands.
+- The response path is designed for graceful failure. If retrieval or generation cannot produce a supported answer, the API returns structured errors or an abstention response instead of crashing or fabricating.
+- The test suite includes 617 passing pytest tests with 87.2% coverage across the agent, API, evidence, and medical retrieval packages.
+- Retrieval backends are normalized through adapter-style schemas, so consumers can work with one response shape while the source layer can evolve from MedlinePlus to PubMed, OpenFDA, or another evidence provider.
+- Structured logging and monitoring helpers track endpoint health, alerts, quotas, credits, latency, tool calls, and troubleshooting metadata.
 
 ## Architecture
 
-```text
-frontend/              React chat client
-src/api/               FastAPI app, routes, rate limiting
-src/agent/             Planner, evaluator, tools, streaming loop, sessions
-src/evidence/          Evidence policy, scoring, query building, schemas
-src/medical_retrieval/ Medication retrieval, claim generation, verification
-src/clients/           OpenAI-compatible LLM clients
-src/monitoring/        Alert, quota, credit, and endpoint health helpers
-tests/                 Backend unit, integration, API, and domain tests
+```mermaid
+flowchart LR
+    User[User] --> UI[React chat UI]
+    UI --> API[FastAPI API]
+    API --> Guardrails[Safety and rate-limit checks]
+    Guardrails --> Agent[Agent planner and retrieval loop]
+    Agent --> MedlinePlus[MedlinePlus]
+    Agent --> PubMed[PubMed / E-utilities]
+    Agent --> LLM[LLM summarization]
+    MedlinePlus --> Schema[Normalized response schema]
+    PubMed --> Schema
+    LLM --> Schema
+    Schema --> Response[Answer, citations, usage, errors]
+    Response --> UI
 ```
+
+Code map:
+
+- `frontend/`: React chat client
+- `src/api/`: FastAPI app, routes, and rate limiting
+- `src/agent/`: planner, evaluator, tools, streaming loop, and sessions
+- `src/evidence/`: evidence policy, scoring, query building, and schemas
+- `src/medical_retrieval/`: medication retrieval, claim generation, and verification
+- `src/clients/`: OpenAI-compatible LLM clients
+- `src/monitoring/`: alert, quota, credit, and endpoint health helpers
+- `tests/`: backend unit, integration, API, and domain tests
 
 The main Docker path runs `uvicorn src.api.app:app` for the API and builds the frontend from `frontend/`.
 
