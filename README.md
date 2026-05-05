@@ -1,6 +1,6 @@
 # Medication Evidence Assistant
 
-A patient-facing medication information assistant with a FastAPI backend, a React chat UI, and a tested evidence pipeline for source-linked answers.
+A personal project exploring medication-information retrieval with a Python/FastAPI backend, a React chat UI, and a tested evidence pipeline for source-linked answers.
 
 I built this project to answer a practical question: can a medication assistant be useful without pretending to be a doctor? The backend retrieves consumer health information and biomedical evidence, normalizes it into one response schema, and returns guarded answers with citations, disclaimers, and structured fallback behavior when a source or model path fails.
 
@@ -13,6 +13,14 @@ I built this project to answer a practical question: can a medication assistant 
 - Supports PubMed/E-utilities and a medical retrieval pipeline for evidence-oriented workflows.
 - Streams agent responses with stage events, citations, usage metadata, and terminal error handling.
 - Includes rate limiting, CORS controls, medical guardrail hooks, monitoring helpers, and session persistence.
+
+## Technical Highlights
+
+- Containerized a Python/FastAPI backend and React frontend with Docker Compose for reproducible local deployment.
+- Designed fallback and partial-response paths so retrieval or generation failures return structured errors or abstention responses instead of crashing the API.
+- Wrote 617 pytest tests reaching 87.2% coverage across the agent, API, evidence, and medical retrieval packages.
+- Implemented structured logging and monitoring utilities for endpoint health, alerts, quotas, and API troubleshooting.
+- Built an adapter layer that normalizes results from multiple retrieval backends into a single schema, allowing sources to be swapped without modifying consumer code.
 
 ## Architecture
 
