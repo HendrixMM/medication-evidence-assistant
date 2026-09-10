@@ -61,6 +61,7 @@ def create_agent_loop() -> AgentLoop:
         enabled=config.enable_guardrails,
     )
     planner = QueryPlanner(llm_client=llm_client, config=config)
+    # Name kept for contract stability; it counts retrieval calls regardless of source (MedlinePlus here).
     pubmed_tool = MedlinePlusSearchTool(client=medlineplus_client, max_results=config.pubmed_max_results_per_query)
     relevance_scorer = (
         SourceRelevanceScorer(llm_client, threshold=config.source_relevance_threshold)
@@ -91,7 +92,7 @@ def create_agent_loop() -> AgentLoop:
     return AgentLoop(
         planner=planner,
         evaluator=evaluator,
-        pubmed_tool=pubmed_tool,
+        pubmed_tool=pubmed_tool,  # name kept for contract stability; counts retrieval calls regardless of source
         summarize_tool=summarize_tool,
         translate_tool=translate_tool,
         guardrails=guardrails,
